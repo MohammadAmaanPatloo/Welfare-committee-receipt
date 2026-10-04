@@ -258,7 +258,13 @@ st.markdown(
         /* Main headings */
         h1 {
             font-size: 1.55rem !important;
-            line-height: 1.2 !important;
+            line-height: 1.3 !important;
+            margin-top: 0.25rem !important;
+            margin-bottom: 0.75rem !important;
+            padding-top: 0.15rem !important;
+            overflow: visible !important;
+            overflow-wrap: anywhere !important;
+            word-break: break-word !important;
         }
 
         h2 {
@@ -353,6 +359,13 @@ st.markdown(
 
         h1 {
             font-size: 1.4rem !important;
+            line-height: 1.3 !important;
+            margin-top: 0.2rem !important;
+            margin-bottom: 0.65rem !important;
+            padding-top: 0.1rem !important;
+            overflow: visible !important;
+            overflow-wrap: anywhere !important;
+            word-break: break-word !important;
         }
 
 
@@ -2862,7 +2875,7 @@ else:
     with filter_col3:
         rows_to_show = st.selectbox(
             "Receipts to Display",
-            [25, 50, 100, 250],
+            [15, 30, 50, 100],
             index=1,
             key="receipt_history_rows",
         )
@@ -3480,7 +3493,7 @@ else:
     with result_col2:
         rows_to_display = st.selectbox(
             "Rows",
-            [25, 50, 100, 250],
+            [15, 30, 50, 100],
             index=0,
             key="expense_history_rows",
         )
@@ -3775,6 +3788,16 @@ st.markdown("---")
 
 st.subheader(f"🏦 Bank Deposits / Withdrawals — {selected_month_text}")
 
+st.markdown(
+    '<div class="account-card">',
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    '<div class="account-section-title">🏦 Bank Movement</div>',
+    unsafe_allow_html=True,
+)
+
 bank_transfer_col1, bank_transfer_col2 = st.columns(2)
 
 with bank_transfer_col1:
@@ -3843,6 +3866,16 @@ closing_cash = (
     opening_cash + cash_income - cash_expenses - deposits_credits + withdrawals_debits
 )
 
+st.markdown(
+    '<div class="account-card">',
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    '<div class="account-section-title">📊 Closing Balances</div>',
+    unsafe_allow_html=True,
+)
+
 balance_col1, balance_col2 = st.columns(2)
 
 
@@ -3879,7 +3912,6 @@ closing_resources = closing_bank + closing_cash
 
 difference = total_resources - (total_expenses + closing_resources)
 
-
 # ============================================================
 # DISPLAY STATEMENT
 # UI ONLY - ACCOUNTING CALCULATIONS ABOVE ARE UNCHANGED
@@ -3887,181 +3919,130 @@ difference = total_resources - (total_expenses + closing_resources)
 
 st.markdown("---")
 
-st.subheader(f"📊 Income & Expenditure Details for {selected_month_text}")
-
-st.caption("Monthly statement summary calculated from Welfare receipts and expenses.")
-
+st.subheader(f"📊 Income Expenditure Details for Month of {selected_month_text}")
 
 # ============================================================
-# INCOME
+# INCOME SIDE
 # ============================================================
 
-st.markdown(
-    '<div class="account-card">',
-    unsafe_allow_html=True,
-)
+income_display_col, expense_display_col = st.columns(2)
 
-st.markdown(
-    '<div class="account-section-title">📥 Income</div>',
-    unsafe_allow_html=True,
-)
+with income_display_col:
+    st.markdown("### 📥 Income Side")
 
-income_table = pd.DataFrame(
-    [
-        ["Last Month Cash", opening_cash],
-        ["Monthly Contribution", monthly_contribution],
-        ["Demise Expenditure Paid", demise_expenditure_paid],
-        ["Other Income", others_income],
-        ["Total Income", total_income],
-    ],
-    columns=["Particulars", "Amount"],
-)
-
-income_table["Amount"] = income_table["Amount"].map(lambda x: f"₹{x:,.2f}")
-
-st.dataframe(
-    income_table,
-    width="stretch",
-    hide_index=True,
-)
-
-st.markdown(
-    f"""
-    <div class="account-total">
-        Total Income: ₹{total_income:,.2f}
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    "</div>",
-    unsafe_allow_html=True,
-)
-
-
-# ============================================================
-# EXPENSES
-# ============================================================
-
-st.markdown(
-    '<div class="account-card">',
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    '<div class="account-section-title">📤 Expenses</div>',
-    unsafe_allow_html=True,
-)
-
-expense_table = pd.DataFrame(
-    [
-        ["Demise Expenditure", demise_expenditure],
-        ["Other Expenses", other_expenses],
-        ["Total Expenses", total_expenses],
-    ],
-    columns=["Particulars", "Amount"],
-)
-
-expense_table["Amount"] = expense_table["Amount"].map(lambda x: f"₹{x:,.2f}")
-
-st.dataframe(
-    expense_table,
-    width="stretch",
-    hide_index=True,
-)
-
-st.markdown(
-    f"""
-    <div class="account-total">
-        Total Expenses: ₹{total_expenses:,.2f}
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    "</div>",
-    unsafe_allow_html=True,
-)
-
-
-# ============================================================
-# BANK MOVEMENT
-# ============================================================
-
-st.markdown(
-    '<div class="account-card">',
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    '<div class="account-section-title">🏦 Bank Movement</div>',
-    unsafe_allow_html=True,
-)
-
-bank_movement_table = pd.DataFrame(
-    [
-        ["Amount Credited to Bank", deposits_credits],
-        ["Amount Debited from Bank", withdrawals_debits],
-    ],
-    columns=["Particulars", "Amount"],
-)
-
-bank_movement_table["Amount"] = bank_movement_table["Amount"].map(
-    lambda x: f"₹{x:,.2f}"
-)
-
-st.dataframe(
-    bank_movement_table,
-    width="stretch",
-    hide_index=True,
-)
-
-st.markdown(
-    "</div>",
-    unsafe_allow_html=True,
-)
-
-
-# ============================================================
-# CLOSING BALANCES
-# ============================================================
-
-st.markdown(
-    '<div class="account-card">',
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    '<div class="account-section-title">📊 Closing Balances</div>',
-    unsafe_allow_html=True,
-)
-
-balance_col1, balance_col2, balance_col3 = st.columns(3)
-
-with balance_col1:
-    st.metric(
-        "🏦 Bank Balance",
-        f"₹{closing_bank:,.2f}",
+    income_table = pd.DataFrame(
+        [
+            [
+                "Last Month's Cash in Hand",
+                opening_cash,
+            ],
+            [
+                "Additions During the month",
+                total_income,
+            ],
+            [
+                "a) Monthly Contribution",
+                monthly_contribution,
+            ],
+            [
+                "b) Demise Expenditure Paid",
+                demise_expenditure_paid,
+            ],
+            [
+                "c) Other Income",
+                others_income,
+            ],
+            [
+                "Last Months Balance in Bank excluding Interest",
+                opening_bank,
+            ],
+        ],
+        columns=[
+            "Particulars",
+            "Amount",
+        ],
     )
 
-with balance_col2:
-    st.metric(
-        "💵 Cash in Hand",
-        f"₹{closing_cash:,.2f}",
+    income_table["Amount"] = income_table["Amount"].map(lambda x: f"₹{x:,.2f}")
+
+    st.dataframe(
+        income_table,
+        width="stretch",
+        hide_index=True,
     )
 
-with balance_col3:
     st.metric(
-        "📊 Closing Balance",
+        "TOTAL",
+        f"₹{total_resources:,.2f}",
+    )
+
+
+# ============================================================
+# EXPENSE SIDE
+# ============================================================
+
+with expense_display_col:
+    st.markdown("### 📤 Expenses Side")
+
+    expense_table = pd.DataFrame(
+        [
+            [
+                "Demise Expenditure",
+                demise_expenditure,
+            ],
+            [
+                "Other Expenses",
+                other_expenses,
+            ],
+            [
+                "Amount Credited to Bank",
+                deposits_credits,
+            ],
+            [
+                "Amount Debited from Bank",
+                withdrawals_debits,
+            ],
+            [
+                "Balance with J&K Bank excluding Interest",
+                closing_bank,
+            ],
+            [
+                "Cash in Hand",
+                closing_cash,
+            ],
+        ],
+        columns=[
+            "Particulars",
+            "Amount",
+        ],
+    )
+
+    expense_table["Amount"] = expense_table["Amount"].map(lambda x: f"₹{x:,.2f}")
+
+    st.dataframe(
+        expense_table,
+        width="stretch",
+        hide_index=True,
+    )
+
+    st.metric(
+        "TOTAL",
         f"₹{closing_resources:,.2f}",
     )
 
-st.markdown(
-    "</div>",
-    unsafe_allow_html=True,
-)
+
+# ============================================================
+# BALANCE CHECK
+# ============================================================
+
+st.markdown("---")
+
+if abs(difference) < 0.01:
+    st.success("✅ Monthly statement is balanced.")
+
+else:
+    st.warning(f"⚠️ Statement difference: ₹{difference:,.2f}")
+
 
 # ============================================================
 # SAVE MONTH
@@ -4169,7 +4150,6 @@ if save_month_button:
 
         st.error(f"Welfare Monthly: {statement_message}")
 
-
 # ============================================================
 # SAVED MONTHLY ACCOUNTS HISTORY
 # ============================================================
@@ -4186,7 +4166,10 @@ if saved_accounts.empty:
 else:
     display_accounts = saved_accounts.copy()
 
-    # Sort newest month first
+    # --------------------------------------------------------
+    # SORT NEWEST MONTH FIRST
+    # --------------------------------------------------------
+
     if "Month" in display_accounts.columns:
         display_accounts["_SortMonth"] = pd.to_datetime(
             display_accounts["Month"],
@@ -4199,7 +4182,10 @@ else:
             ascending=False,
         ).drop(columns=["_SortMonth"])
 
-    # Format monetary columns
+    # --------------------------------------------------------
+    # CLEAN NUMERIC VALUES
+    # --------------------------------------------------------
+
     for column in MONTHLY_ACCOUNT_COLUMNS:
         if column != "Month" and column in display_accounts.columns:
             display_accounts[column] = pd.to_numeric(
@@ -4207,8 +4193,246 @@ else:
                 errors="coerce",
             ).fillna(0.0)
 
-    st.dataframe(
-        display_accounts,
-        width="stretch",
-        hide_index=True,
-    )
+    # --------------------------------------------------------
+    # RESPONSIVE MONTH-BY-MONTH HISTORY
+    # --------------------------------------------------------
+
+    for index, row in display_accounts.iterrows():
+        month_name = str(row.get("Month", "Unknown Month")).strip()
+
+        # --------------------------------------------------------
+        # SAVED MONTH SUMMARY VALUES
+        # --------------------------------------------------------
+
+        total_income_saved = float(row.get("Total Income", 0.0))
+
+        total_expenses_saved = float(row.get("Total Expenses", 0.0))
+
+        closing_balance = float(row.get("Closing Balance", 0.0))
+
+        bank_balance = float(row.get("Bank Balance", 0.0))
+
+        cash_in_hand = float(row.get("Cash in Hand", 0.0))
+
+        # --------------------------------------------------------
+        # MONTH HEADER SUMMARY
+        # --------------------------------------------------------
+
+        with st.expander(
+            (
+                f"📅 {month_name}"
+                f"  •  📥 ₹{total_income_saved:,.2f}"
+                f"  •  📤 ₹{total_expenses_saved:,.2f}"
+                f"  •  📊 ₹{closing_balance:,.2f}"
+            ),
+            expanded=(index == display_accounts.index[0]),
+        ):
+            # ====================================================
+            # QUICK SUMMARY
+            # ====================================================
+
+            summary_col1, summary_col2, summary_col3 = st.columns(3)
+
+            with summary_col1:
+                st.metric(
+                    "🏦 Bank Balance",
+                    f"₹{bank_balance:,.2f}",
+                )
+
+            with summary_col2:
+                st.metric(
+                    "💵 Cash in Hand",
+                    f"₹{cash_in_hand:,.2f}",
+                )
+
+            with summary_col3:
+                st.metric(
+                    "📊 Closing Balance",
+                    f"₹{closing_balance:,.2f}",
+                )
+
+            st.markdown("---")
+
+            # ====================================================
+            # INCOME
+            # ====================================================
+
+            st.markdown(
+                '<div class="account-card">',
+                unsafe_allow_html=True,
+            )
+
+            st.markdown(
+                '<div class="account-section-title">📥 Income</div>',
+                unsafe_allow_html=True,
+            )
+
+            income_rows = [
+                [
+                    "Last Month Cash",
+                    float(row.get("Last Month Cash", 0.0)),
+                ],
+                [
+                    "Monthly Contribution",
+                    float(row.get("Monthly Contribution", 0.0)),
+                ],
+                [
+                    "Demise Expenditure Paid",
+                    float(row.get("Demise Expenditure Paid", 0.0)),
+                ],
+                [
+                    "Total Income",
+                    float(row.get("Total Income", 0.0)),
+                ],
+            ]
+
+            income_table = pd.DataFrame(
+                income_rows,
+                columns=["Particulars", "Amount"],
+            )
+
+            income_table["Amount"] = income_table["Amount"].map(lambda x: f"₹{x:,.2f}")
+
+            st.dataframe(
+                income_table,
+                width="stretch",
+                hide_index=True,
+            )
+
+            st.markdown(
+                "</div>",
+                unsafe_allow_html=True,
+            )
+
+            # ====================================================
+            # EXPENSES
+            # ====================================================
+
+            st.markdown(
+                '<div class="account-card">',
+                unsafe_allow_html=True,
+            )
+
+            st.markdown(
+                '<div class="account-section-title">📤 Expenses</div>',
+                unsafe_allow_html=True,
+            )
+
+            expense_rows = [
+                [
+                    "Demise Expenditure",
+                    float(row.get("Demise Expenditure", 0.0)),
+                ],
+                [
+                    "Other Expenses",
+                    float(row.get("Other Expenses", 0.0)),
+                ],
+                [
+                    "Total Expenses",
+                    float(row.get("Total Expenses", 0.0)),
+                ],
+            ]
+
+            expense_table = pd.DataFrame(
+                expense_rows,
+                columns=["Particulars", "Amount"],
+            )
+
+            expense_table["Amount"] = expense_table["Amount"].map(
+                lambda x: f"₹{x:,.2f}"
+            )
+
+            st.dataframe(
+                expense_table,
+                width="stretch",
+                hide_index=True,
+            )
+
+            st.markdown(
+                "</div>",
+                unsafe_allow_html=True,
+            )
+
+            # ====================================================
+            # BANK MOVEMENT
+            # ====================================================
+
+            st.markdown(
+                '<div class="account-card">',
+                unsafe_allow_html=True,
+            )
+
+            st.markdown(
+                '<div class="account-section-title">🏦 Bank Movement</div>',
+                unsafe_allow_html=True,
+            )
+
+            bank_movement_rows = [
+                [
+                    "Amount Credited to Bank",
+                    float(row.get("Amount Credited to Bank", 0.0)),
+                ],
+                [
+                    "Amount Debited from Bank",
+                    float(row.get("Amount Debited from Bank", 0.0)),
+                ],
+            ]
+
+            bank_movement_table = pd.DataFrame(
+                bank_movement_rows,
+                columns=["Particulars", "Amount"],
+            )
+
+            bank_movement_table["Amount"] = bank_movement_table["Amount"].map(
+                lambda x: f"₹{x:,.2f}"
+            )
+
+            st.dataframe(
+                bank_movement_table,
+                width="stretch",
+                hide_index=True,
+            )
+
+            st.markdown(
+                "</div>",
+                unsafe_allow_html=True,
+            )
+
+            # ====================================================
+            # CLOSING BALANCES
+            # ====================================================
+
+            st.markdown(
+                '<div class="account-card">',
+                unsafe_allow_html=True,
+            )
+
+            st.markdown(
+                '<div class="account-section-title">📊 Closing Balances</div>',
+                unsafe_allow_html=True,
+            )
+
+            balance_col1, balance_col2, balance_col3 = st.columns(3)
+
+            with balance_col1:
+                st.metric(
+                    "🏦 Bank Balance",
+                    f"₹{bank_balance:,.2f}",
+                )
+
+            with balance_col2:
+                st.metric(
+                    "💵 Cash in Hand",
+                    f"₹{cash_in_hand:,.2f}",
+                )
+
+            with balance_col3:
+                st.metric(
+                    "📊 Closing Balance",
+                    f"₹{closing_balance:,.2f}",
+                )
+
+            st.markdown(
+                "</div>",
+                unsafe_allow_html=True,
+            )
