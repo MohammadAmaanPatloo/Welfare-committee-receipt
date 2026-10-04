@@ -103,6 +103,32 @@ st.markdown(
         padding-top: 1.5rem;
         padding-bottom: 3rem;
     }
+    
+    /* =========================================================
+   MAIN APP TITLE
+   ========================================================= */
+
+    .app-main-title {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+
+        font-size: 2.5rem !important;
+        line-height: 1.2 !important;
+        font-weight: 700 !important;
+
+        margin-top: 0 !important;
+        margin-bottom: 0.5rem !important;
+        padding: 0 !important;
+
+        white-space: normal !important;
+        overflow: visible !important;
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
+
+        position: static !important;
+        transform: none !important;
+    }
 
 
     /* =========================================================
@@ -246,6 +272,25 @@ st.markdown(
 
     @media (max-width: 768px) {
 
+        .app-main-title {
+            font-size: 1.55rem !important;
+            line-height: 1.3 !important;
+
+            width: 100% !important;
+            max-width: 100% !important;
+
+            margin-top: 0.25rem !important;
+            margin-bottom: 0.75rem !important;
+            padding: 0 !important;
+
+            white-space: normal !important;
+            overflow: visible !important;
+            overflow-wrap: break-word !important;
+            word-break: normal !important;
+
+            position: static !important;
+            transform: none !important;
+        }
         /* Main page spacing */
         .block-container {
             padding-left: 0.75rem;
@@ -355,7 +400,25 @@ st.markdown(
             padding-left: 0.55rem;
             padding-right: 0.55rem;
         }
+        .app-main-title {
+            font-size: 1.4rem !important;
+            line-height: 1.3 !important;
 
+            width: 100% !important;
+            max-width: 100% !important;
+
+            margin-top: 0.2rem !important;
+            margin-bottom: 0.65rem !important;
+            padding: 0 !important;
+
+            white-space: normal !important;
+            overflow: visible !important;
+            overflow-wrap: break-word !important;
+            word-break: normal !important;
+
+            position: static !important;
+            transform: none !important;
+        }
 
         h1 {
             font-size: 1.4rem !important;
@@ -2064,9 +2127,16 @@ if "generated_receipt_no" not in st.session_state:
 # HEADER
 # ============================================================
 
-st.title("🕌 Welfare Committee Receipt System")
-st.caption("Welfare Digital Receipt & Accounts System")
+st.markdown(
+    """
+    <div class="app-main-title">
+        🕌 Welfare Committee Receipt System
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
+st.caption("Welfare Digital Receipt & Accounts System")
 
 # ============================================================
 # SIDEBAR - MASJID + RECEIPT SETTINGS
